@@ -1,8 +1,10 @@
+/**
+ * On the first usage, visit the tab *Storage* on the firebase website for activation.
+ */
 import { Injectable } from '@angular/core';
 import { Book } from '../models/book.model';
 import { Subject } from 'rxjs';
 import * as firebase from 'firebase';
-import { Promise } from 'q';
 
 
 @Injectable({
@@ -35,7 +37,7 @@ export class BooksService {
 
   getSingleBook(id: number) {
     // keyword new is inapropriate here, but why that?!
-    return Promise(
+    return new Promise(
       (resolve, reject) => {
         firebase.database().ref('/books/' + id).once('value').then(
           (data) => {
@@ -56,9 +58,23 @@ export class BooksService {
   }
 
   removeBook(book: Book) {
+    // Remove the picture of the book if existing
+    if (book.photo) {
+      const storageRef = firebase.storage().refFromURL(book.photo);
+      storageRef.delete().then(
+        () => {
+          console.log("The book's picture is removed!");
+        },
+        (error) => {
+          console.log("Could not remove the book's picture: " + error);
+        }
+      );
+    }
+
+    // Remove book from books' array
     const bookIndexToRemove = this.books.findIndex(
       (bookEl) => {
-        if(bookEl === book) {
+        if (bookEl === book) {
           return true;
         }
       }
@@ -67,4 +83,29 @@ export class BooksService {
     this.saveBooks();
     this.emitBooks();
   }
+
+  // video: 57'12"
+  uploadFile(file: File) {
+    return new Promise(
+      (resolve, reject) => {
+        const almostUniqueFilename = Date.now().toString();
+        const upload = firebase.storage().ref()
+          .child('images/' + almostUniqueFilename + file.name).put(file);
+        upload.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          () => {
+            console.log("Chargement ...");
+          },
+          (error) => {
+            console.log("Erreur de chargement ! : " + error);
+            reject(error);
+          },
+          () => {
+            // direct URL to the file
+            resolve(upload.snapshot.downloadURL);
+          }
+        );
+      }
+    );
+  }
+
 }
