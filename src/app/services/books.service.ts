@@ -100,7 +100,9 @@ export class BooksService {
             reject(error);
           },
           () => {
-            // direct URL to the file
+            /** direct URL to the file
+             * upload.snapshot.downloadURL is deprecated and possibly inactive for nor URL is provided
+            */
             resolve(upload.snapshot.downloadURL);
           }
         );
