@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
 export class SigninComponent implements OnInit {
 
   signInForm: FormGroup;
-  errorMEssage: string;
+  errorMessage: string;
 
-  /* The FormBuilder provides syntactic sugar that shortens creating instances of a FormControl, 
+  /* The FormBuilder provides syntactic sugar that shortens creating instances of a FormControl,
   FormGroup, or FormArray. It reduces the amount of boilerplate needed to build complex forms. */
   constructor(private formBuilder: FormBuilder,
               private authService: AuthService,
@@ -42,7 +42,7 @@ export class SigninComponent implements OnInit {
         this.router.navigate(['/books']);
       },
       (error) => {
-        this.errorMEssage = error;
+        this.errorMessage = error;
       }
     );
   }
