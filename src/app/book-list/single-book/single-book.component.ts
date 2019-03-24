@@ -12,10 +12,11 @@ import { BooksService } from 'src/app/services/books.service';
 })
 export class SingleBookComponent implements OnInit {
 
+  /** Book data */
   book: Book;
 
   // 'route' sert à récupérer l'identifiant de l'URL
-  constructor(private route: ActivatedRoute, private bookService: BooksService, 
+  constructor(private route: ActivatedRoute, private bookService: BooksService,
               private router: Router) { }
 
   ngOnInit() {
@@ -30,6 +31,7 @@ export class SingleBookComponent implements OnInit {
     );
   }
 
+  /** Go back to the list of books */
   onBack() {
      this.router.navigate(['/books']);
   }

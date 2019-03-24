@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
 
 // Video at 29'05"
+/** This service implements the interface `CanActivate` from `@angular/router` for the authentication guard in the routing of the application */
 @Injectable({
   providedIn: 'root'
 })

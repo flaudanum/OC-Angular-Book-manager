@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { BooksService } from '../services/books.service';
 import { Router } from '@angular/router';
 
+/** List of book items that are available in the back-end storage */
 @Component({
   selector: 'app-book-list',
   templateUrl: './book-list.component.html',
@@ -28,18 +29,22 @@ export class BookListComponent implements OnInit, OnDestroy {
     this.bookService.emitBooks();
   }
 
+  /** Navigate to the view for creating a new book */
   onNewBook() {
     this.router.navigate(['/books', 'new']);
   }
 
+  /** Request the deletion of the book item from the back-end storage */
   onDeleteBook(book: Book) {
-    this.bookService.removeBook(book);    
+    this.bookService.removeBook(book);
   }
 
+  /** Navigate to the view showing the book's information */
   onViewBook(id: number) {
     this.router.navigate(['/books', 'view', id]);
   }
 
+  /** Unsubscribe to the `rxjs.Subject` *bookSubject* provided by [[BooksService]] on destruction */
   ngOnDestroy() {
     this.booksSubscription.unsubscribe();
   }
